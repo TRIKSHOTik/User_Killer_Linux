@@ -74,39 +74,39 @@ void RunKiller(const std::string& args) {
 int main() {
     std::string proc_names = "gedit, xcalc";
 
-    std::cout << "--- Setting Environment Variable PROC_TO_KILL ---" << std::endl;
+    std::cout << "Setting Environment Variable PROC_TO_KILL" << std::endl;
     if (setenv("PROC_TO_KILL", proc_names.c_str(), 1) != 0) {
          std::cerr << "setenv failed" << std::endl;
          return 1;
     }
 
-    std::cout << "--- Launching test processes ---" << std::endl;
+    std::cout << "Launching test processes" << std::endl;
     system("gedit &");
     system("xcalc &");
     sleep(2);
 
-    std::cout << "\n--- Checking if processes are running before Killer ---" << std::endl;
+    std::cout << "\nChecking if processes are running before Killer" << std::endl;
     std::vector<std::string> target_processes = {"gedit", "xcalc"};
     for (const auto& name : target_processes) {
         bool running = IsProcessRunning(name);
         std::cout << name << " running before: " << (running ? "Yes" : "No") << std::endl;
     }
 
-    std::cout << "\n--- Running Killer with --name 'xterm' ---" << std::endl;
+    std::cout << "\n Running Killer with --name 'xterm'" << std::endl;
     RunKiller("--name xterm");
     sleep(1);
 
-    std::cout << "\n--- Running Killer using PROC_TO_KILL variable ---" << std::endl;
+    std::cout << "\nRunning Killer using PROC_TO_KILL variable" << std::endl;
     RunKiller("");
     sleep(2);
 
-    std::cout << "\n--- Checking if processes are running after Killer ---" << std::endl;
+    std::cout << "\nChecking if processes are running after Killer" << std::endl;
     for (const auto& name : target_processes) {
         bool running = IsProcessRunning(name);
         std::cout << name << " running after: " << (running ? "Yes" : "No") << std::endl;
     }
 
-    std::cout << "\n--- Removing EV PROC_TO_KILL ---" << std::endl;
+    std::cout << "\nRemoving EV PROC_TO_KILL" << std::endl;
     if (unsetenv("PROC_TO_KILL") != 0) {
          std::cerr << "unsetenv failed" << std::endl;
     }
